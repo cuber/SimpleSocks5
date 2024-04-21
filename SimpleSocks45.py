@@ -98,6 +98,9 @@ async def socks5_handler(reader, writer, version):
         if cmd != 1:  # 1=connect
             raise UnsupportedCommand
 
+        if rsv != 0:  # rsv should be 0
+            raise IncorrectFormat
+
         if atyp == 1:  # ipv4
             host = await reader.readexactly(4)
             hostname = socket.inet_ntop(socket.AF_INET, host)
